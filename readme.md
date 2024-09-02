@@ -8,8 +8,11 @@ FRIGATE CONTAINER + HAILO 8L DETECTOR CONTAINER ON RPI 5
 
 Log container hailo-8L-api-detector:
 2024-09-02 14:41:25.403 [web_log.py:211] INFO:172.20.0.2 [02/Sep/2024:13:41:25 +0100] "POST /v1/vision/detection HTTP/1.1" 200 675 "-" "python-requests/2.32.3"
+
 2024-09-02 14:41:25.490 [web_server.py:202] INFO:Request ID: 025a5949-dbdd-49d0-b587-de37a20c93d3; Found person; roundtrip, ms: 27; inference, ms: 14
+
 2024-09-02 14:41:25.491 [web_log.py:211] INFO:172.20.0.2 [02/Sep/2024:13:41:25 +0100] "POST /v1/vision/detection HTTP/1.1" 200 675 "-" "python-requests/2.32.3"
+
 2024-09-02 14:41:25.611 [web_server.py:202] INFO:Request ID: 5ad0d13f-c143-4780-a216-502f327c491a; Found person; roundtrip, ms: 28; inference, ms: 14
 
 
