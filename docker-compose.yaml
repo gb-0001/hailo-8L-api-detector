@@ -1,16 +1,31 @@
 services:
-  hailo-object-detection-mini:
-    image: hailo-od-mini
+  hailo-object-detection-api-deepstackmode:
+    build: .
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
+      - UDEV=1
+    restart: unless-stopped
     ports:
       - "8080:8080"
+    devices:
+      - /dev/dri:/dev/dri
     volumes:
       - .:/app
+      # - /home/jpmeijers/.Xauthority:/root/.Xauthority:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix
       - /dev:/dev
       - /lib/firmware:/lib/firmware
+      - /run/udev:/run/udev:ro
       - /lib/udev/rules.d:/lib/udev/rules.d
       - /lib/modules:/lib/modules
       - /usr/share/fonts:/usr/share/fonts
-    devices:
-      - /dev/hailo0:/dev/hailo0
+    privileged: true
+    network_mode: host
+    ipc: host
+    tty: true
+    stdin_open: true
+    group_add:
+      - 44
     entrypoint: "python main.py"
 
