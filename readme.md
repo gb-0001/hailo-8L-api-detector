@@ -1,6 +1,6 @@
 FRIGATE CONTAINER + HAILO 8L DETECTOR CONTAINER ON RPI 5 
 
-#CPU USED on RPI5
+#CPU USED on RPI5#
 85% ==> 5 CAMERA RTSP video source 1920x1080 30fps detector frigate 640x640 model yolov6n.hef batch size 8 (config.py==>class Config)
 19% ==> 2 CAMERA RTSP video source 1920x1080 30fps detector frigate 640x640 model yolov6n.hef batch size 8 (config.py==>class Config)
 
