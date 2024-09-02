@@ -150,14 +150,17 @@ def format_detection_response(detection: dict, response_dict: dict = config.get_
                 message = f'{message[:comma_ind]}...'
     predictions = []
     for i in range(num_detections):
-        prediction = {"confidence": float(detection_scores[i]),
-                      "label": labels[i],
-                      "x_min": detection_boxes[i][1],
-                      "y_min": detection_boxes[i][0],
-                      "x_max": detection_boxes[i][3],
-                      "y_max": detection_boxes[i][2]
-                      }
-        predictions.append(prediction)
+        if i < len(labels):
+            prediction = {"confidence": float(detection_scores[i]),
+                          "label": labels[i],
+                          "x_min": detection_boxes[i][1],
+                          "y_min": detection_boxes[i][0],
+                          "x_max": detection_boxes[i][3],
+                          "y_max": detection_boxes[i][2]
+                          }
+            predictions.append(prediction)
+        else:
+            print(f"Erreur: indice {i} depasse la longueur de labels")
     response_dict.update({'message': message, 'predictions': predictions})
 
     return response_dict
