@@ -172,9 +172,8 @@ Avec docker compose ou en cli :
 Docker-compose :
 
       docker compose up -d frigate
-ou cli :
-
-      sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+#ACCES FRIGATE URL :
+    http://[PIIPADDRESS]:5008
 
 
 #install container Hailo-8L-api-detector
@@ -182,6 +181,8 @@ ou cli :
       git clone https://github.com/gb-0001/hailo-8L-api-detector.git
       cd hailo-8L-api-detector
       docker compose up -d hailo-8L-api-detector
+
+#HAILO_8L api_url: http://PIIPADDRESS:8080/v1/vision/detection
 
 
 
