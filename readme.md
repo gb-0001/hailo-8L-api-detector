@@ -67,8 +67,7 @@ https://community.hailo.ai/t/hailo-8l-on-ubuntu-24-04-using-docker/1771
 #creation du container frigate
   FRIGATE SETTING :
   nano ~/frigate-nvr/config.yml
-  #mqtt:
-  #  enabled: False
+
   mqtt:
     enabled: True
     host: 192.168.1.XXX  # Utilisez 'core-mosquitto' comme hote ip Home Assistant
