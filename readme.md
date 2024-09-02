@@ -35,88 +35,88 @@ https://community.hailo.ai/t/hailo-8l-on-ubuntu-24-04-using-docker/1771
     source des commandes ci-dessous Install frigate-nvr Docker
     https://pimylifeup.com/raspberry-pi-frigate-nvr/
     
-    #install du rpi 64bit
-    sudo apt update
-    sudo apt upgrade -y
-    
-    #passer le GPU en 128Mo mini mieux 256Mo
-    sudo raspi-config
-    ==> 4 Performance Options 
-    ==> P2 GPU Memory
-    ==> 128  ou 256
-    
-    mkdir ~/frigate-nvr
-    mkdir ~/frigate-nvr/storage
-    
-    #install docker
-    curl -sSL https://get.docker.com | sh
-    sudo usermod -aG docker $USER
-    logout
-    reboot
-    groups
-    #test de fonctionnement hello-world
-    docker run hello-world
-    
-    
-    #install portainer
-    sudo docker pull portainer/portainer-ce:latest
-    sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
-    
-    http://[PIIPADDRESS]:9000
+        #install du rpi 64bit
+        sudo apt update
+        sudo apt upgrade -y
+        
+        #passer le GPU en 128Mo mini mieux 256Mo
+        sudo raspi-config
+        ==> 4 Performance Options 
+        ==> P2 GPU Memory
+        ==> 128  ou 256
+        
+        mkdir ~/frigate-nvr
+        mkdir ~/frigate-nvr/storage
+        
+        #install docker
+        curl -sSL https://get.docker.com | sh
+        sudo usermod -aG docker $USER
+        logout
+        reboot
+        groups
+        #test de fonctionnement hello-world
+        docker run hello-world
+        
+        
+        #install portainer
+        sudo docker pull portainer/portainer-ce:latest
+        sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+        
+        http://[PIIPADDRESS]:9000
 
 #creation du container frigate
   FRIGATE SETTING :
-  nano ~/frigate-nvr/config.yml
-
-  mqtt:
-    enabled: True
-    host: 192.168.1.XXX  # Utilisez 'core-mosquitto' comme hote ip Home Assistant
-    port: 1883  # Port par dÃ©faut pour MQTT
-    topic_prefix: frigate  # PrÃ©fixe de sujet
-    client_id: frigate  # ID du client
-    user: mqttuser  # Nom d'utilisateur pour se connecter au serveur MQTT
-    password: mqttpassword  # Mot de passe pour se connecter au serveur MQTT
-    stats_interval: 60  # Intervalle en secondes pour publier les statistiques
-  
-  ffmpeg:
-    hwaccel_args: preset-rpi-64-h264 #Enable Hardware Acceleration
-  
-  detectors:
-    deepstack:
-      api_url: http://MYIP:8080/v1/vision/detection
-      type: deepstack
-      api_timeout: 5
-  
-  record:
-    enabled: True
-    retain:
-      days: 7
-      mode: motion
-    events:
-      retain:
-        default: 30
-        mode: motion
-  
-  snapshots:
-    enabled: True
-    retain:
-      default: 5
-  
-  cameras:
-    CAM1: #Name for your comment
+      nano ~/frigate-nvr/config.yml
+    
+      mqtt:
+        enabled: True
+        host: 192.168.1.XXX  # Utilisez 'core-mosquitto' comme hote ip Home Assistant
+        port: 1883  # Port par dÃ©faut pour MQTT
+        topic_prefix: frigate  # PrÃ©fixe de sujet
+        client_id: frigate  # ID du client
+        user: mqttuser  # Nom d'utilisateur pour se connecter au serveur MQTT
+        password: mqttpassword  # Mot de passe pour se connecter au serveur MQTT
+        stats_interval: 60  # Intervalle en secondes pour publier les statistiques
+      
       ffmpeg:
-        inputs:
-          - path: rtsp://MYUSERCAM1:{FRIGATE_RTSP_PASSWORD}@192.168.1.XXX:554/live/ch0 #The Stream you want to monitor
-            roles:
-              - record
-          - path: rtsp://MYUSERCAM1:{FRIGATE_RTSP_PASSWORD}@192.168.1.XXX:554/live/ch1 #The Stream you want to monitor
-            roles:
-              - detect
-      detect:
-        enabled: True # Detection is disabled
-        width: 640 # The Cameras resolution
-        height: 640 # The Cameras resolution
-        fps: 5
+        hwaccel_args: preset-rpi-64-h264 #Enable Hardware Acceleration
+      
+      detectors:
+        deepstack:
+          api_url: http://MYIP:8080/v1/vision/detection
+          type: deepstack
+          api_timeout: 5
+      
+      record:
+        enabled: True
+        retain:
+          days: 7
+          mode: motion
+        events:
+          retain:
+            default: 30
+            mode: motion
+      
+      snapshots:
+        enabled: True
+        retain:
+          default: 5
+      
+      cameras:
+        CAM1: #Name for your comment
+          ffmpeg:
+            inputs:
+              - path: rtsp://MYUSERCAM1:{FRIGATE_RTSP_PASSWORD}@192.168.1.XXX:554/live/ch0 #The Stream you want to monitor
+                roles:
+                  - record
+              - path: rtsp://MYUSERCAM1:{FRIGATE_RTSP_PASSWORD}@192.168.1.XXX:554/live/ch1 #The Stream you want to monitor
+                roles:
+                  - detect
+          detect:
+            enabled: True # Detection is disabled
+            width: 640 # The Cameras resolution
+            height: 640 # The Cameras resolution
+            fps: 5
         
     CAM2:
       ffmpeg:
@@ -135,51 +135,53 @@ https://community.hailo.ai/t/hailo-8l-on-ubuntu-24-04-using-docker/1771
       #  port: 8000
       #  user: MYUSERCAM2
       #  password: {FRIGATE_RTSP_PASSWORD2}
-  version: 0.14
+      version: 0.14
 
 
-nano ~/frigate-nvr/docker-compose.yml
-services:
-  frigate:
-    container_name: frigate
-    privileged: true # this may not be necessary for all setups
-    restart: unless-stopped
-    image: ghcr.io/blakeblackshear/frigate:stable
-    shm_size: "256mb"
-    devices:
-      - /dev/bus/usb:/dev/bus/usb #Used for Coral if Available
-      - /dev/hailo0
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /projects/frigate-nvr/config.yml:/config/config.yml
-      - /projects/frigate-nvr/storage:/media/frigate
-      - type: tmpfs #Remove this if using a Pi with 2GB or Less RAM
-        target: /tmp/cache
-        tmpfs:
-          size: 1000000000
-    ports:
-      - "5008:5000"
-      - "8554:8554" # RTSP feeds
-      - "8555:8555/tcp" # WebRTC over tcp
-      - "8555:8555/udp" # WebRTC over udp
-    environment:
-      FRIGATE_RTSP_PASSWORD: "MYPASSWORD"
-      FRIGATE_RTSP_PASSWORD2: "MYPASSWORD"
+      nano ~/frigate-nvr/docker-compose.yml
+      services:
+          frigate:
+            container_name: frigate
+            privileged: true # this may not be necessary for all setups
+            restart: unless-stopped
+            image: ghcr.io/blakeblackshear/frigate:stable
+            shm_size: "256mb"
+            devices:
+              - /dev/bus/usb:/dev/bus/usb #Used for Coral if Available
+              - /dev/hailo0
+            volumes:
+              - /etc/localtime:/etc/localtime:ro
+              - /projects/frigate-nvr/config.yml:/config/config.yml
+              - /projects/frigate-nvr/storage:/media/frigate
+              - type: tmpfs #Remove this if using a Pi with 2GB or Less RAM
+                target: /tmp/cache
+                tmpfs:
+                  size: 1000000000
+            ports:
+              - "5008:5000"
+              - "8554:8554" # RTSP feeds
+              - "8555:8555/tcp" # WebRTC over tcp
+              - "8555:8555/udp" # WebRTC over udp
+            environment:
+              FRIGATE_RTSP_PASSWORD: "MYPASSWORD"
+              FRIGATE_RTSP_PASSWORD2: "MYPASSWORD"
 
 
 #démarre le container portainer
 Avec docker compose ou en cli :
 Docker-compose :
-docker compose up -d frigate
+
+      docker compose up -d frigate
 ou cli :
-sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+
+      sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 
 
 #install container Hailo-8L-api-detector
 
-git clone https://github.com/gb-0001/hailo-8L-api-detector.git
-cd hailo-8L-api-detector
-docker compose up -d hailo-8L-api-detector
+      git clone https://github.com/gb-0001/hailo-8L-api-detector.git
+      cd hailo-8L-api-detector
+      docker compose up -d hailo-8L-api-detector
 
 
 
