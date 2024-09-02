@@ -66,8 +66,16 @@ def extract_detections(input_data, threshold:float = config.default_confidence_s
 
 
 def add_labels(detection: dict):
-    detection.update({'detection_labels': [labels[dt] for dt in detection['detection_classes']]})
-
+    if isinstance(detection['detection_classes'], list):
+        detection_labels = []
+        for dt in detection['detection_classes']:
+            if isinstance(dt, int) and dt < len(labels):
+                detection_labels.append(labels[dt])
+            else:
+                print(f"Erreur: indice {dt} n'est pas valide ou depasse la longueur de labels")
+        detection.update({'detection_labels': detection_labels})
+    else:
+        print(f"Erreur: detection_classes n'est pas une liste, mais {type(detection['detection_classes'])}")
 
 class HailoDevice:
     def __init__(self):
