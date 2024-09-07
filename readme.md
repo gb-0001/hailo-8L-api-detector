@@ -78,11 +78,12 @@ Pour plus de détails, consultez les README respectifs :
      #install portainer
         sudo docker pull portainer/portainer-ce:latest
         sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
-
+     ```
+     
      #URL d'accès:
 
      http://[RPI5-IPADDRESS]:9000
-     ```
+
 
 ### 5.2 Lancement du Conteneur Frigate
 
@@ -135,11 +136,11 @@ Pour plus de détails, consultez les README respectifs :
 
    - ```bash
      docker compose up -d frigate
-
+     ```
      #ACCES FRIGATE URL :
 
      http://[RPI5-IPADDRESS]:5008
-     ```
+
 
 
 ### 5.3 Installation du container Hailo-8L-api-detector
@@ -154,11 +155,12 @@ Pour plus de détails, consultez les README respectifs :
      cd hailo-8L-api-detector
 
      docker compose up -d hailo-8L-api-detector
+     ```
 
      #ACCES HAILO_8L api_url:
     
      http://[RPI5-IPADDRESS]:8080/v1/vision/detection
-     ```
+
 
 2. Vérifiez les journaux pour vous assurer que tout fonctionne correctement :
    - ```bash
