@@ -132,14 +132,14 @@ Pour plus de détails, consultez les README respectifs :
 
 
     # Lancement du container Frigate:
-    
+
    - ```bash
      docker compose up -d frigate
 
-    #ACCES FRIGATE URL :
+     #ACCES FRIGATE URL :
 
-    http://[RPI5-IPADDRESS]:5008
-    ```
+     http://[RPI5-IPADDRESS]:5008
+     ```
 
 
 ### 5.3 Installation du container Hailo-8L-api-detector
