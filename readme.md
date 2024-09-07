@@ -89,8 +89,11 @@ Pour plus de détails, consultez les README respectifs :
 1. Lancez le conteneur à l'aide de Docker-compose :
 
    - #PREREQUIS CONFIGURATION container FRIGATE docker-compose.yml ==> [frigate-nvr/docker-compose.yml] (https://github.com/gb-0001/hailo-8L-api-detector/blob/master/frigate-nvr/docker-compose.yml)
+
    - Modifier le path ~/frigate-nvr dans docker-compose.yml:
+
        volumes:
+
          - /etc/localtime:/etc/localtime:ro
 
          - ~/frigate-nvr/config.yml:/config/config.yml
@@ -98,6 +101,7 @@ Pour plus de détails, consultez les README respectifs :
          - ~/frigate-nvr/storage:/media/frigate
 
     - Modifier le password des CAM1 ET CAM2 dans docker-compose.yml:
+    
       environment:
 
         FRIGATE_RTSP_PASSWORD: "MYPASSWORD" # RTSP CAM1 PASSWORD
