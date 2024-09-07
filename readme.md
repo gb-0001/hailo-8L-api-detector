@@ -85,7 +85,7 @@ Pour plus de détails, consultez les README respectifs :
      ```
 
 3. Creation du container frigate:
-   - ```
+   - ```bash
    nano ~/frigate-nvr/config.yml
     
       mqtt:
