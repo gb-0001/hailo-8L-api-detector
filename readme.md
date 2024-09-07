@@ -149,16 +149,16 @@ Pour plus de détails, consultez les README respectifs :
    - /!\ Warning possible mais pas important pour       - DISPLAY=${DISPLAY}
 
    - ```bash
-      git clone https://github.com/gb-0001/hailo-8L-api-detector.git
+     git clone https://github.com/gb-0001/hailo-8L-api-detector.git
 
-      cd hailo-8L-api-detector
+     cd hailo-8L-api-detector
 
-      docker compose up -d hailo-8L-api-detector
+     docker compose up -d hailo-8L-api-detector
 
-    #ACCES HAILO_8L api_url:
+     #ACCES HAILO_8L api_url:
     
-    http://[RPI5-IPADDRESS]:8080/v1/vision/detection
-    ```
+     http://[RPI5-IPADDRESS]:8080/v1/vision/detection
+     ```
 
 2. Vérifiez les journaux pour vous assurer que tout fonctionne correctement :
    - ```bash
