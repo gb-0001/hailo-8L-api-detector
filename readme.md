@@ -122,24 +122,27 @@ Pour plus de détails, consultez les README respectifs :
             ffmpeg:
 
             inputs:
-            
+
                 - path: rtsp://[USERCAM]:{FRIGATE_RTSP_PASSWORD}@[IPCAM1]:554/live/ch0
             ...
 
    - ```bash
+
+    # Lancement du container Frigate:
+
      docker compose up -d frigate
 
     #ACCES FRIGATE URL :
 
     http://[RPI5-IPADDRESS]:5008
-     ```
+    ```
 
 
 ### 5.3 Installation du container Hailo-8L-api-detector
 
 1. Lancez le conteneur à l'aide de Docker-compose :
 
-   - /!\ Warning possible mais pas important       - DISPLAY=${DISPLAY}
+   - /!\ Warning possible mais pas important pour       - DISPLAY=${DISPLAY}
 
    - ```bash
       git clone https://github.com/gb-0001/hailo-8L-api-detector.git
@@ -151,7 +154,7 @@ Pour plus de détails, consultez les README respectifs :
     #ACCES HAILO_8L api_url:
     
     http://[RPI5-IPADDRESS]:8080/v1/vision/detection
-     ```
+    ```
 
 2. Vérifiez les journaux pour vous assurer que tout fonctionne correctement :
    - ```bash
