@@ -84,9 +84,9 @@ Pour plus de détails, consultez les README respectifs :
      http://[PIIPADDRESS]:9000
      ```
 
-3. Creation du container frigate:
+3. Creation du container frigate :
    - ```bash
-   nano ~/frigate-nvr/config.yml
+     nano ~/frigate-nvr/config.yml
     
       mqtt:
         enabled: True # False [optionnel]
