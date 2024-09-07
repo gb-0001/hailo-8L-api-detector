@@ -2,7 +2,6 @@
 
 Cette procédure décrit les étapes pour configurer un système de détection de personnes sur un Raspberry Pi 5, en utilisant Frigate et un détecteur Hailo 8L.
 
-[... à venir schema + video] 
 
 
 ## 1. Retour sur l'utilisation du CPU sur RPI5
@@ -79,7 +78,7 @@ Pour plus de détails, consultez les README respectifs :
         sudo docker pull portainer/portainer-ce:latest
         sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
      ```
-     
+
      #URL d'accès:
 
      http://[RPI5-IPADDRESS]:9000
