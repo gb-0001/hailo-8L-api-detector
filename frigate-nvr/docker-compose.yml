@@ -1,0 +1,26 @@
+services:
+  frigate:
+    container_name: frigate
+    privileged: true # this may not be necessary for all setups
+    restart: unless-stopped
+    image: ghcr.io/blakeblackshear/frigate:stable
+    shm_size: "256mb"
+    devices:
+      - /dev/bus/usb:/dev/bus/usb #Used for Coral if Available
+      - /dev/hailo0
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ~/frigate-nvr/config.yml:/config/config.yml
+      - ~/frigate-nvr/storage:/media/frigate
+      - type: tmpfs #Remove this if using a Pi with 2GB or Less RAM
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "5008:5000"
+      - "8554:8554" # RTSP feeds
+      - "8555:8555/tcp" # WebRTC over tcp
+      - "8555:8555/udp" # WebRTC over udp
+    environment:
+      FRIGATE_RTSP_PASSWORD: "MYPASSWORD" # RTSP CAM1 PASSWORD
+      FRIGATE_RTSP_PASSWORD2: "MYPASSWORD" # RTSP CAM2 PASSWORD

@@ -1,0 +1,68 @@
+mqtt:
+  enabled: true # False [optionnel] True if used Home Assistant
+  host: 192.168.1.xxx  # Utilisez 'core-mosquitto' comme hôte IP Home Assistant
+  port: 1883  # Port par défaut pour MQTT
+  topic_prefix: frigate  # Préfixe de sujet
+  client_id: frigate  # ID du client
+  user: mqttuser  # Nom d'utilisateur pour se connecter au serveur MQTT
+  password: mqttuser  # Mot de passe pour se connecter au serveur MQTT
+  stats_interval: 60  # Intervalle en secondes pour publier les statistiques
+
+ffmpeg:
+  hwaccel_args: preset-rpi-64-h264 #Enable Hardware Acceleration
+
+detectors:
+  deepstack:
+    api_url: http://[RPI5-IPADDRESS]:8080/v1/vision/detection
+    type: deepstack
+    api_timeout: 5
+
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+  events:
+    retain:
+      default: 10
+      mode: motion
+
+snapshots:
+  enabled: true
+  retain:
+    default: 5
+
+cameras:
+  CAM1: #Name for your comment
+    ffmpeg:
+      inputs:
+        - path: rtsp://[USERCAM]:{FRIGATE_RTSP_PASSWORD}@[IPCAM1]:554/live/ch0 #The Stream you want to monitor
+          roles:
+            - record
+        - path: rtsp://[USERCAM]:{FRIGATE_RTSP_PASSWORD}@[IPCAM1]:554/live/ch1 #The Stream you want to monitor
+          roles:
+            - detect
+    detect:
+      enabled: true # Detection is disabled
+      width: 640 # The Cameras resolution
+      height: 640 # The Cameras resolution
+      fps: 5
+
+  CAM2:
+    ffmpeg:
+      inputs:
+        - path: rtsp://[USERCAM]:{FRIGATE_RTSP_PASSWORD2}@[IPCAM2]:554/live/ch00_0 #The Stream you want to monitor
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true # Detection is disabled
+      width: 640 # The Cameras resolution
+      height: 640 # The Cameras resolution
+      fps: 5
+    # onvif:
+    #   host: [IPCAM2]
+    #   port: 8000
+    #   user: admin
+    #   password: {FRIGATE_RTSP_PASSWORD2}
+version: 0.14

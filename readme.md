@@ -81,127 +81,54 @@ Pour plus de détails, consultez les README respectifs :
 
      #URL d'accès:
 
-     http://[PIIPADDRESS]:9000
-     ```
-
-3. Creation du container frigate :
-   - ```bash
-     nano ~/frigate-nvr/config.yml
-    
-      mqtt:
-        enabled: True # False [optionnel]
-        host: 192.168.1.XXX  # Utilisez 'core-mosquitto' comme hote ip Home Assistant
-        port: 1883  # Port par dÃ©faut pour MQTT
-        topic_prefix: frigate  # PrÃ©fixe de sujet
-        client_id: frigate  # ID du client
-        user: mqttuser  # Nom d'utilisateur pour se connecter au serveur MQTT
-        password: mqttpassword  # Mot de passe pour se connecter au serveur MQTT
-        stats_interval: 60  # Intervalle en secondes pour publier les statistiques
-      
-      ffmpeg:
-        hwaccel_args: preset-rpi-64-h264 #Enable Hardware Acceleration
-      
-      detectors:
-        deepstack:
-          api_url: http://[PIIPADDRESS]:8080/v1/vision/detection
-          type: deepstack
-          api_timeout: 5
-      
-      record:
-        enabled: True
-        retain:
-          days: 7
-          mode: motion
-        events:
-          retain:
-            default: 30
-            mode: motion
-      
-      snapshots:
-        enabled: True
-        retain:
-          default: 5
-      
-      cameras:
-        CAM1: #Name for your comment
-          ffmpeg:
-            inputs:
-              - path: rtsp://[MYUSERCAM1]:{FRIGATE_RTSP_PASSWORD}@192.168.1.XXX:554/live/ch0 #The Stream you want to monitor
-                roles:
-                  - record
-              - path: rtsp://[MYUSERCAM1]:{FRIGATE_RTSP_PASSWORD}@192.168.1.XXX:554/live/ch1 #The Stream you want to monitor
-                roles:
-                  - detect
-          detect:
-            enabled: True # Detection is disabled
-            width: 640 # The Cameras resolution
-            height: 640 # The Cameras resolution
-            fps: 5
-        
-    CAM2:
-      ffmpeg:
-        inputs:
-          - path: rtsp://[MYUSERCAM2]:{FRIGATE_RTSP_PASSWORD2}@192.168.1.XXX:554/live/ch00_0 #The Stream you want to monitor
-            roles:
-              - detect
-              - record
-      detect:
-        enabled: True # Detection is disabled
-        width: 640 # The Cameras resolution
-        height: 640 # The Cameras resolution
-        fps: 5
-      #onvif:
-      \#  host: 192.168.1.XXX
-      \#  port: 8000
-      \#  user: MYUSERCAM2
-      \#  password: {FRIGATE_RTSP_PASSWORD2}
-      version: 0.14
-
-    - Docker-compose Frigate
-      nano ~/frigate-nvr/docker-compose.yml
-      services:
-          frigate:
-            container_name: frigate
-            privileged: true # this may not be necessary for all setups
-            restart: unless-stopped
-            image: ghcr.io/blakeblackshear/frigate:stable
-            shm_size: "256mb"
-            devices:
-              - /dev/bus/usb:/dev/bus/usb #Used for Coral if Available
-              - /dev/hailo0
-            volumes:
-              - /etc/localtime:/etc/localtime:ro
-              - /projects/frigate-nvr/config.yml:/config/config.yml
-              - /projects/frigate-nvr/storage:/media/frigate
-              - type: tmpfs #Remove this if using a Pi with 2GB or Less RAM
-                target: /tmp/cache
-                tmpfs:
-                  size: 1000000000
-            ports:
-              - "5008:5000"
-              - "8554:8554" # RTSP feeds
-              - "8555:8555/tcp" # WebRTC over tcp
-              - "8555:8555/udp" # WebRTC over udp
-            environment:
-              FRIGATE_RTSP_PASSWORD: "MYPASSWORD"
-              FRIGATE_RTSP_PASSWORD2: "MYPASSWORD"
+     http://[RPI5-IPADDRESS]:9000
      ```
 
 ### 5.2 Lancement du Conteneur Frigate
 
 1. Lancez le conteneur à l'aide de Docker-compose :
+
+   - #PREREQUIS CONFIGURATION container FRIGATE docker-compose.yml
+   - # Modifier le path ~/frigate-nvr dans docker-compose.yml:
+       volumes:
+         - /etc/localtime:/etc/localtime:ro
+         - ~/frigate-nvr/config.yml:/config/config.yml
+         - ~/frigate-nvr/storage:/media/frigate
+
+    - # Modifier le password des CAM1 ET CAM2 dans docker-compose.yml:
+      environment:
+        FRIGATE_RTSP_PASSWORD: "MYPASSWORD" # RTSP CAM1 PASSWORD
+        FRIGATE_RTSP_PASSWORD2: "MYPASSWORD" # RTSP CAM2 PASSWORD
+
+
+   - #PREREQUIS CONFIGURATION FRIGATE config.yml
+     Modifier [RPI5-IPADDRESS] +  [USERCAM] + [IPCAM1] + PORT ==> :554/live/ch0:
+       detectors:
+         deepstack:
+            api_url: http://[RPI5-IPADDRESS]:8080/v1/vision/detection
+
+        cameras:
+          CAM1: #Name for your comment
+            ffmpeg:
+            inputs:
+                - path: rtsp://[USERCAM]:{FRIGATE_RTSP_PASSWORD}@[IPCAM1]:554/live/ch0
+            ...
+
    - ```bash
      docker compose up -d frigate
 
     #ACCES FRIGATE URL :
 
-    http://[PIIPADDRESS]:5008
+    http://[RPI5-IPADDRESS]:5008
      ```
 
 
 ### 5.3 Installation du container Hailo-8L-api-detector
 
 1. Lancez le conteneur à l'aide de Docker-compose :
+
+   - /!\ Warning possible mais pas important       - DISPLAY=${DISPLAY}
+
    - ```bash
       git clone https://github.com/gb-0001/hailo-8L-api-detector.git
 
@@ -211,7 +138,7 @@ Pour plus de détails, consultez les README respectifs :
 
     #ACCES HAILO_8L api_url:
     
-    http://[PIIPADDRESS]:8080/v1/vision/detection
+    http://[RPI5-IPADDRESS]:8080/v1/vision/detection
      ```
 
 2. Vérifiez les journaux pour vous assurer que tout fonctionne correctement :
