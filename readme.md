@@ -100,8 +100,8 @@ Pour plus de détails, consultez les README respectifs :
 
          - ~/frigate-nvr/storage:/media/frigate
 
-    - Modifier le password des CAM1 ET CAM2 dans docker-compose.yml:
-    
+    - Modifier "MYPASSWORD" pour le password des CAM1 ET CAM2 dans docker-compose.yml:
+
       environment:
 
         FRIGATE_RTSP_PASSWORD: "MYPASSWORD" # RTSP CAM1 PASSWORD
@@ -130,10 +130,10 @@ Pour plus de détails, consultez les README respectifs :
                 - path: rtsp://[USERCAM]:{FRIGATE_RTSP_PASSWORD}@[IPCAM1]:554/live/ch0
             ...
 
-   - ```bash
 
     # Lancement du container Frigate:
-
+    
+   - ```bash
      docker compose up -d frigate
 
     #ACCES FRIGATE URL :
