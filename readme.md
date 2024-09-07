@@ -64,7 +64,7 @@ Pour plus de détails, consultez les README respectifs :
         mkdir ~/frigate-nvr/storage
      ```
 
-2. installation docker + portainer :
+2. Installation docker + portainer :
    - ```bash
      #install docker
         curl -sSL https://get.docker.com | sh
@@ -85,7 +85,7 @@ Pour plus de détails, consultez les README respectifs :
      ```
 
 3. Creation du container frigate:
-   - ```plaintext
+   - ```
    nano ~/frigate-nvr/config.yml
     
       mqtt:
