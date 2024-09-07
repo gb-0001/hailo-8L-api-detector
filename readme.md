@@ -88,29 +88,41 @@ Pour plus de détails, consultez les README respectifs :
 
 1. Lancez le conteneur à l'aide de Docker-compose :
 
-   - #PREREQUIS CONFIGURATION container FRIGATE docker-compose.yml
-   - # Modifier le path ~/frigate-nvr dans docker-compose.yml:
+   - #PREREQUIS CONFIGURATION container FRIGATE docker-compose.yml ==> [frigate-nvr/docker-compose.yml] (https://github.com/gb-0001/hailo-8L-api-detector/blob/master/frigate-nvr/docker-compose.yml)
+   - Modifier le path ~/frigate-nvr dans docker-compose.yml:
        volumes:
          - /etc/localtime:/etc/localtime:ro
+
          - ~/frigate-nvr/config.yml:/config/config.yml
+
          - ~/frigate-nvr/storage:/media/frigate
 
-    - # Modifier le password des CAM1 ET CAM2 dans docker-compose.yml:
+    - Modifier le password des CAM1 ET CAM2 dans docker-compose.yml:
       environment:
+
         FRIGATE_RTSP_PASSWORD: "MYPASSWORD" # RTSP CAM1 PASSWORD
+
         FRIGATE_RTSP_PASSWORD2: "MYPASSWORD" # RTSP CAM2 PASSWORD
 
 
-   - #PREREQUIS CONFIGURATION FRIGATE config.yml
+   - #PREREQUIS CONFIGURATION FRIGATE config.yml ==> [frigate-nvr/config/config.yml] (https://github.com/gb-0001/hailo-8L-api-detector/blob/master/frigate-nvr/config/config.yml)
+
      Modifier [RPI5-IPADDRESS] +  [USERCAM] + [IPCAM1] + PORT ==> :554/live/ch0:
+
        detectors:
+
          deepstack:
+
             api_url: http://[RPI5-IPADDRESS]:8080/v1/vision/detection
 
         cameras:
+
           CAM1: #Name for your comment
+
             ffmpeg:
+
             inputs:
+            
                 - path: rtsp://[USERCAM]:{FRIGATE_RTSP_PASSWORD}@[IPCAM1]:554/live/ch0
             ...
 
