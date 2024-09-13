@@ -166,7 +166,21 @@ For more details, refer to the respective README files :
       docker logs hailo-8L-api-detector
      ```
 
-## 6. References
+## 6. Web UI [source](https://github.com/serg987/hailo-mini-od-server)
+
+There is a primitive Web UI implemented for debugging purposes. There are 3 endpoints that a user can get access to through UI:
+![get_list_ui](https://github.com/gb-0001/hailo-8L-api-detector/blob/master/doc/images/get_list_ui.jpg)
+POST /v1/vision/custom/list - shows a list of available models. Note: models must be downloaded manually from Hailo AWS bucket
+![visualization_ui](https://github.com/gb-0001/hailo-8L-api-detector/blob/master/doc/images/visualization_ui.jpg)
+
+POST /v1/vision/detection - main endpoint used by Frigate and Blue Iris for object detection. 
+![detection_ui](https://github.com/gb-0001/hailo-8L-api-detector/blob/master/doc/images/detection_ui.jpg)
+
+POST /v1/visualization/custom/{model_name} - a helper endpoint (not from Codeproject.AI) to create an image with masks for detected objects. Image is stored locally and can be displayed in Web UI. Very helpful for debugging and comparing models.  The image for analysis is taken from CNN Travel, Credits: David Paul Morris/Bloomberg/Getty Images
+
+Note: a POST request to /v1/visualization/custom/{model_name} changes current model used, so it will be used in /v1/vision/detection call as well. To populate a model list in the dropdown, get models first - click on 'Get list-custom' button at the top of the page. The files with masks are also created in output_images where they can be taken for further analysis. Note that the files are in the size of model input, might be with padding, as on the screenshot. Masking on an original image is not implemented.
+
+## 7. References
 
 - [Hailo Mini Object Detection Server](https://github.com/serg987/hailo-mini-od-server)
 - [pi-ai-kit-ubuntu](https://github.com/canonical/pi-ai-kit-ubuntu)
