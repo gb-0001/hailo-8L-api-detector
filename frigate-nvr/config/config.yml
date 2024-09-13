@@ -17,16 +17,6 @@ detectors:
     type: deepstack
     api_timeout: 5
 
-record:
-  enabled: true
-  retain:
-    days: 7
-    mode: motion
-  events:
-    retain:
-      default: 10
-      mode: motion
-
 snapshots:
   enabled: true
   retain:
@@ -47,7 +37,15 @@ cameras:
       width: 640 # The Cameras resolution
       height: 640 # The Cameras resolution
       fps: 5
-
+    record:
+      enabled: true
+      retain:
+        days: 7
+        mode: motion
+      events:
+        retain:
+          default: 10
+          mode: motion
   CAM2:
     ffmpeg:
       inputs:
@@ -60,6 +58,15 @@ cameras:
       width: 640 # The Cameras resolution
       height: 640 # The Cameras resolution
       fps: 5
+    record:
+      enabled: true
+      retain:
+        days: 7
+        mode: motion
+      events:
+        retain:
+          default: 10
+          mode: motion
     # onvif:
     #   host: [IPCAM2]
     #   port: 8000

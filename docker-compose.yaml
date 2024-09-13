@@ -1,5 +1,5 @@
 services:
-  hailo-object-detection-api-deepstackmode:
+  hailo-8l-api-detector:
     build: .
     environment:
       - DISPLAY=${DISPLAY}

@@ -153,7 +153,7 @@ Pour plus de détails, consultez les README respectifs :
 
      cd hailo-8L-api-detector
 
-     docker compose up -d hailo-8L-api-detector
+     docker compose up -d hailo-8l-api-detector
      ```
 
      #ACCES HAILO_8L api_url:
