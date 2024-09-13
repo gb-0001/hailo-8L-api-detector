@@ -23,8 +23,8 @@ Example output from the detector logs :
 
 To implement a Deepstack API equivalent for Frigate on a Raspberry Pi 5, I merged the following two projects:
 
-- **Projet 1** : Hailo Object Detection Mini Server - [Source](https://github.com/serg987/hailo-mini-od-server)
-- **Projet 2** : pi-ai-kit-ubuntu for preparing the RPI5 host - [Source](https://github.com/canonical/pi-ai-kit-ubuntu)
+- **Project 1** : Hailo Object Detection Mini Server - [Source](https://github.com/serg987/hailo-mini-od-server)
+- **Project 2** : pi-ai-kit-ubuntu for preparing the RPI5 host - [Source](https://github.com/canonical/pi-ai-kit-ubuntu)
 
 For more details, refer to the respective README files :
 - [README_pi-ai-kit-ubuntu.md](https://github.com/gb-0001/hailo-8L-api-detector/blob/master/README_pi-ai-kit-ubuntu.md)
