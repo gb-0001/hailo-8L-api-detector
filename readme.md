@@ -47,14 +47,9 @@ For more details, refer to the respective README files :
    cd hailort
    git describe --exact-match --tags
    cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DHAILO_BUILD_EXAMPLES=1 && sudo cmake --build build --config release --target install
+   hailortcli --version
+   hailortcli fw-control identify
    ```
-#TESTING:
-
-   - ```bash
-hailortcli --version
-hailortcli fw-control identify
-   ```
-
 ## 5. Configuration and Deployment
 
 ### 5.1 RPI5 Preparation
