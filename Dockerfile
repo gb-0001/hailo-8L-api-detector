@@ -16,11 +16,17 @@ RUN apt-get install -y binutils binutils-aarch64-linux-gnu binutils-common build
 
 RUN apt-get install -y hailo-tappas-core-3.28.2 hailofw
 
+# hailo-rt requires a running systemd to install, so we do this later in the running container
+# RUN apt-get install -y hailort rpicam-apps-hailo-postprocess
+
+#RUN git clone --depth 1 https://github.com/raspberrypi/rpicam-apps.git
+
 
 RUN git clone https://github.com/hailo-ai/hailo-rpi5-examples.git && \
     cd hailo-rpi5-examples && ./download_resources.sh
 
-RUN mkdir /opt/python3.10
+
+RUN mkdir /opt/python3.11
 
 # To avoid .pyc files and save space
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -31,7 +37,7 @@ ENV TZ=Europe/Paris
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Install all dependencies you need to compile Python3.10 and then a wheel for Hailo
+# Install all dependencies you need to compile Python3.11 and then a wheel for Hailo
 RUN apt update --fix-missing
 RUN apt install -y wget libffi-dev gcc build-essential curl tcl-dev tk-dev uuid-dev lzma-dev liblzma-dev libssl-dev libsqlite3-dev python3.11-dev dkms git python3.11-venv python3-pip cmake rsync g++-12 gcc-12 linux-headers-generic dpkg expect
 
@@ -39,17 +45,18 @@ RUN mkdir -p /lib/modules/$(uname -r)
 
 RUN ln -s /usr/src/linux-headers-$(uname -r) /lib/modules/$(uname -r)/build
 
+
 # Download Python source code from official site and build it
-RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz
-RUN tar -zxvf Python-3.10.0.tgz
-RUN cd Python-3.10.0 && ./configure --prefix=/opt/python3.10 && make && make install
+RUN wget https://www.python.org/ftp/python/3.11.0/Python-3.11.0.tgz
+RUN tar -zxvf Python-3.11.0.tgz
+RUN cd Python-3.11.0 && ./configure --prefix=/opt/python3.11 && make && make install
 
 # Delete the python source code and temp files
-RUN rm Python-3.10.0.tgz
-RUN rm -r Python-3.10.0/
+RUN rm Python-3.11.0.tgz
+RUN rm -r Python-3.11.0/
 
 # Now link it so that $python works
-RUN ln -s /opt/python3.10/bin/python3.10 /usr/bin/python
+RUN ln -s /opt/python3.11/bin/python3.11 /usr/bin/python
 
 # update pip
 RUN python -m pip install --upgrade pip
@@ -62,20 +69,24 @@ RUN wget https://github.com/raspberrypi/linux/archive/refs/tags/raspberrypi-kern
     make headers_install INSTALL_HDR_PATH=/usr/src/linux-headers-6.6.31+rpt-rpi-2712 && \
     rm -rf raspberrypi-kernel_1.20210303-1.tar.gz linux-raspberrypi-kernel_1.20210303-1
 
+
 # copy some files to the image
 RUN mkdir /app/hailo_assets
 RUN cd /app/hailo_assets/
 COPY requirements.txt /app/
 COPY hailo_assets/ /app/hailo_assets/
 
+
 # CrÃ©er un script pour automatiser la rÃ©ponse Ã  la question DKMS
+
 RUN echo '#!/usr/bin/expect -f\n\
-spawn dpkg -i /app/hailo_assets/hailort-pcie-driver_4.18.0_all.deb\n\
+spawn dpkg -i /app/hailo_assets/hailort-pcie-driver_4.19.0_all.deb\n\
 expect "Do you wish to use DKMS? [Y/n]:"\n\
 send "Y\r"\n\
 expect eof' > /app/hailo_assets/install_hailort.expect && \
     chmod +x /app/hailo_assets/install_hailort.expect
 RUN /app/hailo_assets/install_hailort.expect || apt-get install -f -y
+
 
 # Cloner le dÃ©pÃ´t HailoRT et installer HailoRT
 RUN git clone https://github.com/hailo-ai/hailort.git && \
@@ -87,15 +98,16 @@ RUN git clone https://github.com/hailo-ai/hailort.git && \
     make install
 
 # install HailoRT .deb package
-#RUN dpkg -i /app/hailo_assets/hailort_4.18.0_arm64.deb || apt-get install -f -y
-RUN /bin/sh -c dpkg -i /app/hailo_assets/hailort_4.18.0_arm64.deb || apt-get install -f -y
-
+#RUN dpkg -i /app/hailo_assets/hailort_4.19.0_arm64.deb || apt-get install -f -y
+RUN /bin/sh -c dpkg -i /app/hailo_assets/hailort_4.19.0_arm64.deb || apt-get install -f -y
 # compile HailoRT wheel
-RUN python -m pip install /app/hailo_assets/hailort-4.18.0-cp310-cp310-linux_aarch64.whl || true
+RUN python -m pip install /app/hailo_assets/hailort-4.19.0-cp311-cp311-linux_aarch64.whl || true
 RUN cat /var/log/hailort-pcie-driver.deb.log || true
 RUN python -m pip install -r requirements.txt
 
 # remove copied files to save some space
 RUN rm -rf hailo_assets
 
-#CMD ["/bin/sh", "-c", "bash"]
+
+
+CMD ["/bin/sh", "-c", "bash"]

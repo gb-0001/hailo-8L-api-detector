@@ -1,5 +1,5 @@
 services:
-  hailo-8l-api-detector:
+  hailo-8l-api-detector-4.19.0:
     build: .
     environment:
       - DISPLAY=${DISPLAY}
