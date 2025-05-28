@@ -44,11 +44,17 @@ For more details, refer to the respective README files :
    ==> install driver on RPI5:
    
    git clone https://github.com/hailo-ai/hailort.git
+   
    cd hailort
+   
    git describe --exact-match --tags
+   
    cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DHAILO_BUILD_EXAMPLES=1 && sudo cmake --build build --config release --target install
+   
    hailortcli --version
+   
    hailortcli fw-control identify
+   
    
 ## 5. Configuration and Deployment
 
