@@ -62,7 +62,7 @@ RUN ln -s /opt/python3.11/bin/python3.11 /usr/bin/python
 RUN python -m pip install --upgrade pip
 
 RUN uname -r
-# TÃ©lÃ©charger et installer les en-tÃªtes du noyau
+# Télécharger et installer les en-têtes du noyau
 RUN wget https://github.com/raspberrypi/linux/archive/refs/tags/raspberrypi-kernel_1.20210303-1.tar.gz && \
     tar -xzf raspberrypi-kernel_1.20210303-1.tar.gz && \
     cd linux-raspberrypi-kernel_1.20210303-1 && \
@@ -77,10 +77,10 @@ COPY requirements.txt /app/
 COPY hailo_assets/ /app/hailo_assets/
 
 
-# CrÃ©er un script pour automatiser la rÃ©ponse Ã  la question DKMS
+# Créer un script pour automatiser la réponse à la question DKMS
 
 RUN echo '#!/usr/bin/expect -f\n\
-spawn dpkg -i /app/hailo_assets/hailort-pcie-driver_4.19.0_all.deb\n\
+spawn dpkg -i /app/hailo_assets/hailort-pcie-driver_4.21.0_all.deb\n\
 expect "Do you wish to use DKMS? [Y/n]:"\n\
 send "Y\r"\n\
 expect eof' > /app/hailo_assets/install_hailort.expect && \
@@ -88,7 +88,7 @@ expect eof' > /app/hailo_assets/install_hailort.expect && \
 RUN /app/hailo_assets/install_hailort.expect || apt-get install -f -y
 
 
-# Cloner le dÃ©pÃ´t HailoRT et installer HailoRT
+# Cloner le dépôt HailoRT et installer HailoRT
 RUN git clone https://github.com/hailo-ai/hailort.git && \
     cd hailort && \
     mkdir build && \
@@ -98,10 +98,10 @@ RUN git clone https://github.com/hailo-ai/hailort.git && \
     make install
 
 # install HailoRT .deb package
-#RUN dpkg -i /app/hailo_assets/hailort_4.19.0_arm64.deb || apt-get install -f -y
-RUN /bin/sh -c dpkg -i /app/hailo_assets/hailort_4.19.0_arm64.deb || apt-get install -f -y
+#RUN dpkg -i /app/hailo_assets/hailort_4.21.0_arm64.deb || apt-get install -f -y
+RUN /bin/sh -c dpkg -i /app/hailo_assets/hailort_4.21.0_arm64.deb || apt-get install -f -y
 # compile HailoRT wheel
-RUN python -m pip install /app/hailo_assets/hailort-4.19.0-cp311-cp311-linux_aarch64.whl || true
+RUN python -m pip install /app/hailo_assets/hailort-4.21.0-cp311-cp311-linux_aarch64.whl || true
 RUN cat /var/log/hailort-pcie-driver.deb.log || true
 RUN python -m pip install -r requirements.txt
 
