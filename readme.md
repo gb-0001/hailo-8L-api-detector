@@ -42,13 +42,18 @@ For more details, refer to the respective README files :
 1. Follow the instructions provided in the link below to install Hailo 8L :
    - [Hailo Documentation](https://community.hailo.ai/t/hailo-8l-on-ubuntu-24-04-using-docker/1771)
    ==> install driver on RPI5:
-#git clone https://github.com/hailo-ai/hailort.git
-#cd hailort
-#git describe --exact-match --tags
-#cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DHAILO_BUILD_EXAMPLES=1 && sudo cmake --build build --config release --target install
+   - ```bash
+   git clone https://github.com/hailo-ai/hailort.git
+   cd hailort
+   git describe --exact-match --tags
+   cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DHAILO_BUILD_EXAMPLES=1 && sudo cmake --build build --config release --target install
+   ```
 #TESTING:
-#hailortcli --version
-#hailortcli fw-control identify
+
+   - ```bash
+hailortcli --version
+hailortcli fw-control identify
+   ```
 
 ## 5. Configuration and Deployment
 
