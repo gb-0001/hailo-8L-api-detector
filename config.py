@@ -41,7 +41,7 @@ class Config:
         self.padding_color = (114, 114, 114)
         self.default_confidence_score = 0.6
         self.model_folder = 'models'
-        self.default_model_name = 'yolov8s'
+        self.default_model_name = 'yolov11s'
         self.current_model_name = None
         self.model_filename_dict = dict()
         self.detect_msg_len = 25
