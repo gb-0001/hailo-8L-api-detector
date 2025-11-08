@@ -1,5 +1,5 @@
 services:
-  hailo-8l-api-detector-4.21.0:
+  hailo-8l-api-detector-4.23.0:
     build: .
     environment:
       - DISPLAY=${DISPLAY}
@@ -21,7 +21,7 @@ services:
       - /lib/modules:/lib/modules
       - /usr/share/fonts:/usr/share/fonts
     privileged: true
-    network_mode: host
+    #network_mode: host
     ipc: host
     tty: true
     stdin_open: true
